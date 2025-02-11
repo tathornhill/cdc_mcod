@@ -1,10 +1,6 @@
 ---
 title: "read_me"
-<<<<<<< HEAD
-format: html
-=======
 format: gfm
->>>>>>> 1cb757d (initial commit)
 editor: visual
 ---
 
