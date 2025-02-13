@@ -1,11 +1,14 @@
-# read_me
+# CDC Multiple Cause of Death (MCOD) Data
 
 
 # Steps
 
-1.  read_cdc_data.QMD
-2.  clean_cdc_df.QMD
-3.  to do: join with ICD 10 descriptions
+1.  [read_cdc_data.QMD](read_cdc_data.QMD)
+    Read in large CDC text files using `readr::read_fwf()` and save as a parquet file.
+2.  [subset_cdc_mcod_drugs.qmd](subset_cdc_mcod_drugs.qmd)
+    Subset the data to only include drug-related deaths and explore.
+    This is a broad inclusion criteria (i.e., much broader than just overdoses).
+3.  To do: join with ICD 10 descriptions
 
 # Data Sources
 
