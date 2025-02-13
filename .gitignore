@@ -2,6 +2,10 @@
 in/
 out/
 
+# mac os attributes
+.DS_Store
+
+
 # History files
 .Rhistory
 .Rapp.history
