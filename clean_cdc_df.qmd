@@ -1,0 +1,72 @@
+---
+title: "clean_cdc_df"
+format: html
+editor: visual
+---
+
+```{r}
+source("utils/setup_libraries.R")
+source("utils/icd10_codes.R")
+source("utils/clean_age.R")
+```
+
+```{r}
+cdc_20_23 <- read_parquet(here("out","cdc_20_23.parque"))
+```
+
+```{r}
+# Filter for rows containing any drug codes using str_detect
+cdc_20_23_drug_related <- cdc_20_23 %>% 
+  drug_filter() %>% 
+  clean_age()
+```
+
+# Explore below
+
+```{r}
+summary_deaths <- cdc_20_23_drug_related %>% 
+  select(opium:cannabis) %>% 
+  summarise(across(everything(), sum, na.rm = TRUE))
+```
+
+Explore COD
+
+Manner of Death
+1 ... Accident
+2 ... Suicide
+3 ... Homicide
+4 ... Pending investigation
+5 ... Could not determine
+6 ... Self-Inflicted
+7 ... Natural
+Blank ... Not specified
+
+```{r}
+cdc_20_23_drug_related %>% 
+  tabyl(manner_of_death, cod)
+```
+
+CDC defined opioid overdose
+
+```{r}
+opioid_cdc_def <- cdc_20_23_drug_related %>% 
+  filter(any_opioid  == 1 & !is.na(cod))
+```
+
+Resident Status
+
+```{r}
+opioid_cdc_def%>% 
+  janitor::tabyl(resident_status)
+```
+
+Explore F11 Codes
+
+```{r}
+f11_codes <- cdc_20_23_drug_related %>%
+   filter(str_detect(record_axis_conditions, "F11"))
+
+# n = 1,393
+x <- anti_join(f11_codes, opioid_cdc_def,
+               by = c("data_year", "id"))
+```

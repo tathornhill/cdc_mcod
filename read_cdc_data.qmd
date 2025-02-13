@@ -1,0 +1,45 @@
+---
+title: "Read in CDC Files"
+format: html
+editor: visual
+---
+
+```{r}
+source("utils/setup_libraries.R")
+source("utils/get_cdc_mcod.R")
+```
+
+*Note: Raw files must already be unzipped and saved in the "in" folder.*
+
+file paths
+
+```{r}
+cdc_23_path <- here("in","VS23MORT.DUSMCPUB_r20241030")
+cdc_22_path <- here("in","VS22MORT.DUSMCPUB_r20240307")
+cdc_21_path <- here("in","VS21MORT.DUSMCPUB_r20230320.txt")
+cdc_20_path <- here("in","VS20MORT.DUSMCPUB_r20220105")
+```
+
+read in files
+
+```{r}
+cdc_23 <- get_cdc_mcod(cdc_23_path)
+cdc_22 <- get_cdc_mcod(cdc_22_path)
+cdc_21 <- get_cdc_mcod(cdc_21_path)
+cdc_20 <- get_cdc_mcod(cdc_20_path)
+```
+
+bind files
+
+```{r}
+cdc_20_23 <- bind_rows(cdc_23,
+                       cdc_22,
+                       cdc_21,
+                       cdc_20)
+```
+
+save as parquet
+
+```{r}
+cdc_20_23 %>% write_parquet(here("out","cdc_20_23.parque"))
+```
